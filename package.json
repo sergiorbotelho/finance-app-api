@@ -7,10 +7,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migration": "node src/db/postgres/migrations/exec.js",
-    "start:dev": "node --watch index.js"
+    "start": "node --watch ./index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sergio Botelho",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.2.0",
