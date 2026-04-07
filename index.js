@@ -9,7 +9,9 @@ import {
   UpdateUserController,
 } from "./src/controllers/index.js";
 import { PostgresGetUserByIdRepository } from "./src/repositories/postgres/get-user-by-id.js";
+import { PostgresUpdateUserRepository } from "./src/repositories/postgres/update-user.js";
 import { GetUserByIdUseCase } from "./src/use-cases/get-user-by-id.js";
+import { UpdateUserCase } from "./src/use-cases/update-user.js";
 const app = express();
 
 app.use(express.json());
@@ -23,7 +25,11 @@ app.post("/api/users", async (req, res) => {
 });
 
 app.patch("/api/users/:userId", async (req, res) => {
-  const updateUserController = new UpdateUserController();
+  const updateUserCaseRepository = new PostgresUpdateUserRepository();
+
+  const updateUserCase = new UpdateUserCase(updateUserCaseRepository);
+
+  const updateUserController = new UpdateUserController(updateUserCase);
 
   const { statusCode, body } = await updateUserController.execute(req);
 
