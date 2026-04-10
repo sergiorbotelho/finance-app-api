@@ -11,7 +11,6 @@ export class GetUserByIdController {
     this.getUserByIdUseCase = getUserByIdUseCase;
   }
   async execute(httpRequest) {
-    // console.log(httpRequest.params?.userId);
     try {
       const isIdValid = checkIdIsValid(httpRequest?.params?.userId);
 
