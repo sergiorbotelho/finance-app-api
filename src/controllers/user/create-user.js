@@ -7,6 +7,7 @@ import {
   emailIsAlreadyInUseResponse,
   invalidPasswordResponse,
   serverError,
+  validateRequiredFields,
 } from "../helpers/index.js";
 export class CreateUserController {
   constructor(createUserUseCase) {
@@ -18,10 +19,13 @@ export class CreateUserController {
 
       const requiredFields = ["first_name", "last_name", "email", "password"];
 
-      for (const field of requiredFields) {
-        if (!params[field] || params[field].trim().length === 0) {
-          return badRequest({ message: `Missing param: ${field}` });
-        }
+      const { ok: requiredFieldsWereProvided, missingField } =
+        validateRequiredFields(params, requiredFields);
+
+      if (!requiredFieldsWereProvided) {
+        return badRequest({
+          message: `The field ${missingField} is required.`,
+        });
       }
 
       const passwordIsValid = checkIfPasswordIsValid(params.password);
