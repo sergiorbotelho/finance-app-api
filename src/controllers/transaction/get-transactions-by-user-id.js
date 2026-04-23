@@ -1,0 +1,39 @@
+import { UserNotFoundError } from "../../errors/user";
+import {
+  checkIdIsValid,
+  invalidIdResponse,
+  ok,
+  requiredFieldIsMissingResponse,
+  serverError,
+  userNotFoundResponse,
+} from "../helpers.js";
+
+export class GetTransactionsByUserId {
+  constructor(getTransactionsByUserIdUseCase) {
+    this.getTransactionsByUserIdUseCase = getTransactionsByUserIdUseCase;
+  }
+  async execute(httpRequest) {
+    try {
+      const userId = httpRequest.query.userId;
+
+      if (!userId) {
+        return requiredFieldIsMissingResponse("userId");
+      }
+
+      const userIdIsValid = checkIdIsValid(userId);
+      if (!userIdIsValid) {
+        return invalidIdResponse();
+      }
+      const transactions = await this.getTransactionsByUserIdUseCase.execute({
+        userId,
+      });
+      return ok(transactions);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof UserNotFoundError) {
+        return userNotFoundResponse();
+      }
+      return serverError();
+    }
+  }
+}
