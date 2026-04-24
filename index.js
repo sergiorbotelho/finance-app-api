@@ -2,7 +2,10 @@
 import "dotenv/config";
 import express from "express";
 
-import { makeCreateTransactionController } from "./src/factories/controllers/transaction.js";
+import {
+  makeCreateTransactionController,
+  makeGetTransactionsByUserIdController,
+} from "./src/factories/controllers/transaction.js";
 import {
   makeCreateUserController,
   makeDeleteUserController,
@@ -42,6 +45,14 @@ app.delete("/api/users/:userId", async (req, res) => {
 
   const { statusCode, body } = await deleteUserControoler.execute(req);
 
+  res.status(statusCode).json(body);
+});
+
+app.get("/api/transactions", async (req, res) => {
+  const getTransactionsByUserIdController =
+    makeGetTransactionsByUserIdController();
+  const { statusCode, body } =
+    await getTransactionsByUserIdController.execute(req);
   res.status(statusCode).json(body);
 });
 
