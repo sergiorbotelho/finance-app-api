@@ -2,7 +2,7 @@ import validator from "validator";
 import { badRequest } from "./http.js";
 
 export const checkIfAmountIsValid = (amount) => {
-  if (typeof amount === "number") {
+  if (typeof amount !== "number") {
     return false;
   }
 
