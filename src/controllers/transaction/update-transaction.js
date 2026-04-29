@@ -17,7 +17,7 @@ export class UpdateTransactionController {
 
   async execute(httpRequest) {
     try {
-      const idIsValid = checkIdIsValid(httpRequest.params.id);
+      const idIsValid = checkIdIsValid(httpRequest.params.transactionId);
 
       if (!idIsValid) {
         return invalidIdResponse();
@@ -54,7 +54,7 @@ export class UpdateTransactionController {
       }
 
       const transaction = await this.updateTransactionUseCase.execute(
-        httpRequest.params.id,
+        httpRequest.params.transactionId,
         params,
       );
 

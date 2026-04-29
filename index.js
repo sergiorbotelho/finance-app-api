@@ -5,6 +5,7 @@ import express from "express";
 import {
   makeCreateTransactionController,
   makeGetTransactionsByUserIdController,
+  makeUpdateTransactionController,
 } from "./src/factories/controllers/transaction.js";
 import {
   makeCreateUserController,
@@ -60,6 +61,13 @@ app.post("/api/transactions", async (req, res) => {
   const createTransactionController = makeCreateTransactionController();
 
   const { body, statusCode } = await createTransactionController.execute(req);
+
+  res.status(statusCode).json(body);
+});
+
+app.patch("/api/transactions/:transactionId", async (req, res) => {
+  const updateTransactionController = makeUpdateTransactionController();
+  const { body, statusCode } = await updateTransactionController.execute(req);
 
   res.status(statusCode).json(body);
 });
