@@ -1,5 +1,5 @@
 export class DeleteTransactionUseCase {
-  contructor(deleteTransactionRepository) {
+  constructor(deleteTransactionRepository) {
     this.deleteTransactionRepository = deleteTransactionRepository;
   }
   async execute(transactionId) {
