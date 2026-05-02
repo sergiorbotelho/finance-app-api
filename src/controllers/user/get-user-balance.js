@@ -7,7 +7,7 @@ import {
   userNotFoundResponse,
 } from "../helpers/index.js";
 
-export class GetuserBalanceController {
+export class GetUserBalanceController {
   constructor(getUserBalanceUseCase) {
     this.getUserBalanceUseCase = getUserBalanceUseCase;
   }
