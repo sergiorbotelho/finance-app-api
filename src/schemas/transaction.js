@@ -5,7 +5,7 @@ export const createTransactionSchema = z.object({
   name: z.string().trim().min(1, {
     error: "Name is required.",
   }),
-  date: z.date({ error: "Date is required" }),
+  date: z.string().pipe(z.coerce.date({ error: "Date is required" })),
   type: z.enum(["EXPENSE", "EARNING", "INVESTMENT"], {
     error: "Type must be EXPENSE, EARNING or INVESTMENT.",
   }),
