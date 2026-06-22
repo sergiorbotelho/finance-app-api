@@ -72,4 +72,21 @@ describe("Create User Controller", () => {
 
     expect(result.statusCode).toBe(400);
   });
+  it("should return 400 if email is invalid", async () => {
+    const createUserUseCase = new CreateUserUseCaseStub();
+    const createUserController = new CreateUserController(createUserUseCase);
+
+    const httpRequest = {
+      body: {
+        first_name: "Sergio",
+        last_name: "Botelho",
+        email: "sergio",
+        password: "12345678",
+      },
+    };
+
+    const result = await createUserController.execute(httpRequest);
+
+    expect(result.statusCode).toBe(400);
+  });
 });
