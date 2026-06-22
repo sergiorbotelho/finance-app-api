@@ -89,7 +89,7 @@ describe("Create User Controller", () => {
 
     expect(result.statusCode).toBe(400);
   });
-  it("should return 400 if password is not provided", async () => {
+  it("should return 400 if password is less than 6 characters", async () => {
     const createUserUseCase = new CreateUserUseCaseStub();
     const createUserController = new CreateUserController(createUserUseCase);
 
@@ -98,6 +98,7 @@ describe("Create User Controller", () => {
         first_name: "Sergio",
         last_name: "Botelho",
         email: "sergio",
+        password: "12345",
       },
     };
 
