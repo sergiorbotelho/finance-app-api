@@ -100,6 +100,22 @@ describe("Create User Controller", () => {
 
     expect(result.statusCode).toBe(400);
   });
+  it("should return 400 if password is not provided", async () => {
+    const createUserUseCase = new CreateUserUseCaseStub();
+    const createUserController = new CreateUserController(createUserUseCase);
+
+    const httpRequest = {
+      body: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+      },
+    };
+
+    const result = await createUserController.execute(httpRequest);
+
+    expect(result.statusCode).toBe(400);
+  });
   it("should return 400 if password is less than 6 characters", async () => {
     const createUserUseCase = new CreateUserUseCaseStub();
     const createUserController = new CreateUserController(createUserUseCase);
@@ -139,5 +155,24 @@ describe("Create User Controller", () => {
     await createUserController.execute(httpRequest);
 
     expect(executeSpy).toHaveBeenCalledWith(httpRequest.body);
+  });
+  it("should return 500 if CrateUserUseCase throws", async () => {
+    const createUserUseCase = new CreateUserUseCaseStub();
+    const createUserController = new CreateUserController(createUserUseCase);
+    const httpRequest = {
+      body: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+        password: faker.internet.password({
+          length: 8,
+        }),
+      },
+    };
+    jest.spyOn(createUserUseCase, "execute").mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const result = await createUserController.execute(httpRequest);
+    expect(result.statusCode).toBe(500);
   });
 });
