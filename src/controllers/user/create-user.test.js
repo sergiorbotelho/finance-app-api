@@ -4,7 +4,7 @@ import { CreateUserController } from "./create-user";
 
 describe("Create User Controller", () => {
   class CreateUserUseCaseStub {
-    execute(user) {
+    async execute(user) {
       return user;
     }
   }
@@ -170,9 +170,7 @@ describe("Create User Controller", () => {
         }),
       },
     };
-    jest.spyOn(createUserUseCase, "execute").mockImplementationOnce(() => {
-      throw new Error();
-    });
+    jest.spyOn(createUserUseCase, "execute").mockRejectedValueOnce(new Error());
     const result = await createUserController.execute(httpRequest);
     expect(result.statusCode).toBe(500);
   });
@@ -189,9 +187,9 @@ describe("Create User Controller", () => {
         }),
       },
     };
-    jest.spyOn(createUserUseCase, "execute").mockImplementationOnce(() => {
-      throw new EmailAlreadyInUseError(httpRequest.body.email);
-    });
+    jest
+      .spyOn(createUserUseCase, "execute")
+      .mockRejectedValue(new EmailAlreadyInUseError(httpRequest.body.email));
     const result = await createUserController.execute(httpRequest);
     expect(result.statusCode).toBe(400);
   });
